@@ -116,7 +116,7 @@ let life = 5;
 let letterUsed = " ";
 let j = 0;
 const newWord = document.getElementById("newWord");
-let wordNumber = getRandomInteger(1, 200);
+let wordNumber = getRandomInteger(1, 500);
 document.getElementById("guess").innerHTML = guess;
 let word = romanianWords[wordNumber];
 console.log(word);
@@ -131,14 +131,15 @@ for (letter in word) {
     veri = veri + " ";
 }
 
-function showWinMessage(mesaj) {
+function showFinishMessage(message) {
     const messageElement = document.getElementById("win-message");
-    messageElement.innerHTML = mesaj;
+    messageElement.innerHTML = message;
     messageElement.style.display = "block"; // Fă-l vizibil
     messageElement.classList.add("win-message");
 }
 
 const revealTwoLetters = (word, guess) => {
+    console.log(wordNumber,word, guess);
     firstLetter = word[0];
     secondLetter = word[word.length - 1];
     for (i = 0; i < word.length; i++) {
@@ -178,7 +179,7 @@ newWord.addEventListener("click", () => {
     guess = "";
     veri = "";
     resetImages();
-    wordNumber = getRandomInteger(1, 2000);
+    wordNumber = getRandomInteger(1, 500);
     word = romanianWords[wordNumber];
     document.getElementById("lettersUsed").innerHTML = "";
     for (letter in word) {
@@ -208,6 +209,14 @@ document.addEventListener("keydown", (event) => {
         document.getElementById("lettersUsed").innerHTML = letterUsed;
         console.log(word);
         word = word.toUpperCase();
+        if(guessedLetter == word){
+            showFinishMessage("You won!")
+            for (i = 0; i < word.length; i++) {
+                j = i * 2;
+                guess = guess.slice(0, j) + word[i] + guess.slice(j + 1);
+            }
+            document.getElementById("guess").innerHTML = guess;
+        }
         if (word.includes(guessedLetter)) {
             for (i = 0; i < word.length; i++) {
                 if (guessedLetter == word[i]) {
@@ -226,10 +235,10 @@ document.addEventListener("keydown", (event) => {
         }
 
         if (veri == word) {
-            showWinMessage("You won!");
+            showFinishMessage("You won!");
         }
         if (life == 0) {
-            showWinMessage("You lost!");
+            showFinishMessage("You lost!");
             document.getElementById("guess").innerHTML = word;
         }
 
