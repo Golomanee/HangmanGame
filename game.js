@@ -116,11 +116,12 @@ let life = 5;
 let letterUsed = " ";
 let j = 0;
 const newWord = document.getElementById("newWord");
-let wordNumber = getRandomInteger(1, 500);
+let wordNumber = getRandomInteger(1, 200);
 document.getElementById("guess").innerHTML = guess;
 let word = romanianWords[wordNumber];
 console.log(word);
 veri = '';
+const gameContainer = document.getElementById("game");
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -128,6 +129,13 @@ function getRandomInteger(min, max) {
 for (letter in word) {
     guess = guess + "_ ";
     veri = veri + " ";
+}
+
+function showWinMessage(mesaj) {
+    const messageElement = document.getElementById("win-message");
+    messageElement.innerHTML = mesaj;
+    messageElement.style.display = "block"; // Fă-l vizibil
+    messageElement.classList.add("win-message");
 }
 
 const revealTwoLetters = (word, guess) => {
@@ -144,22 +152,32 @@ const revealTwoLetters = (word, guess) => {
             veri = veri.slice(0, i) + secondLetter.toUpperCase() + veri.slice(i + 1);
             guess = guess.slice(0, j) + secondLetter.toUpperCase() + guess.slice(j + 1);
         }
-        
+
     }
     document.getElementById("guess").innerHTML = guess;
     return guess;
 }
 
-newWord.addEventListener("click", () => {
-    letterUsed = '';
-    guess = "";
-    veri = "";
-    life = 5;
+const resetImages = () => {
     document.getElementById(1).src = "images/Screenshot_1.png"
     document.getElementById(2).src = "images/Screenshot_1.png"
     document.getElementById(3).src = "images/Screenshot_1.png"
     document.getElementById(4).src = "images/Screenshot_1.png"
     document.getElementById(5).src = "images/Screenshot_1.png"
+    document.getElementById(1).classList.remove("heart-lost")
+    document.getElementById(2).classList.remove("heart-lost")
+    document.getElementById(3).classList.remove("heart-lost")
+    document.getElementById(4).classList.remove("heart-lost")
+    document.getElementById(5).classList.remove("heart-lost")
+    life = 5;
+}
+
+newWord.addEventListener("click", () => {
+    gameContainer.classList.remove("new-game");
+    letterUsed = '';
+    guess = "";
+    veri = "";
+    resetImages();
     wordNumber = getRandomInteger(1, 2000);
     word = romanianWords[wordNumber];
     document.getElementById("lettersUsed").innerHTML = "";
@@ -169,6 +187,10 @@ newWord.addEventListener("click", () => {
     }
     guess = revealTwoLetters(word, guess);
     document.getElementById("guess").innerHTML = guess;
+    const messageElement = document.getElementById("win-message");
+    messageElement.style.display = "none"; // Fă-l vizibil
+    messageElement.classList.remove("win-message");
+    gameContainer.classList.add("new-game");
 })
 
 
@@ -186,7 +208,6 @@ document.addEventListener("keydown", (event) => {
         document.getElementById("lettersUsed").innerHTML = letterUsed;
         console.log(word);
         word = word.toUpperCase();
-        console.log(guess)
         if (word.includes(guessedLetter)) {
             for (i = 0; i < word.length; i++) {
                 if (guessedLetter == word[i]) {
@@ -197,18 +218,20 @@ document.addEventListener("keydown", (event) => {
                 document.getElementById("guess").innerHTML = guess;
             }
         }
-        else
+        else {
             life--;
+            const currentHeart = document.getElementById(life + 1);
+            currentHeart.classList.add("heart-lost");
+            currentHeart.src = "images/Screenshot_2.png";
+        }
 
-        if (veri == word)
-            alert("Congrats!");
+        if (veri == word) {
+            showWinMessage("You won!");
+        }
         if (life == 0) {
-            alert("You lost!");
+            showWinMessage("You lost!");
             document.getElementById("guess").innerHTML = word;
         }
-        const currentHeart = document.getElementById(life + 1);
-        currentHeart.src = "images/Screenshot_2.png";
-
 
 
     }

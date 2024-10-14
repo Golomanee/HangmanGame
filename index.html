@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="game.js" defer></script>
+    <link rel="stylesheet" href="game.css">
+</head>
+
+<body>
+    <h1>HANGMAN</h1>
+    <div class="game" id="game">
+        <div class="top">
+            <div class="healthbar">
+                <img src="images/Screenshot_1.png" alt="" class="hearth" class="heart-lost" id="1">
+                <img src="images/Screenshot_1.png" alt="" class="hearth" class="heart-lost" id="2">
+                <img src="images/Screenshot_1.png" alt="" class="hearth" class="heart-lost" id="3">
+                <img src="images/Screenshot_1.png" alt="" class="hearth" class="heart-lost" id="4">
+                <img src="images/Screenshot_1.png" alt="" class="hearth" class="heart-lost" id="5">
+            </div>
+            <p id="guess" class="letter-reveal"> </p>
+        </div>
+        <div class="bottom">
+            <p style="display: inline-block;">Letters used: <p style="display: inline-block;" id="lettersUsed"></p></p>
+            <input id="guessedLetter" placeholder="Type your guess here..." type="text">
+        </div>
+        <button id="newWord">New word</button>
+    </div>
+    <div id="win-message" class="win-message" style="display: none;">
+    </div>
+</body>
+
+</html>
